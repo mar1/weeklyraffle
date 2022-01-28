@@ -1,0 +1,133 @@
+//DEPENDANCIES
+const ethers = require('ethers'); // library to interact with the blockchain
+var readlineSync = require('readline-sync'); // library to interact with user inputs
+
+const contractAddress = '0x8fBE243D898e7c88A6724bB9eB13d746614D23d6'; // GLMR Apes contract address
+const abi = [{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}] // shorten version of our smartcontract ABI
+const providerURL = 'https://rpc.api.moonbeam.network'; // Moonbeam Provider
+const provider = new ethers.providers.StaticJsonRpcProvider(providerURL, {
+    chainId: 1284,
+    name: 'moonbeam'
+});
+
+
+//CONFIG
+//We declare an array for the future winners per round, a number of winners (for raffle 1 and 2) and the prizes for the lottery
+const raffle1Winners = []
+const raffle1Rounds = 5
+const raffle1Price = '5 GLMR'
+const raffle2Winners = []
+const raffle2Rounds = 3
+const raffle2Price = '15 GLMR'
+const raffle3Winner = []
+const raffle3Price = '50 GLMR'
+// winners array will register all the winners addresses to verify they didn't win on the current session
+let winners = []
+
+//MAIN
+
+//simple function which returns holder wallet address for a particular tokenID
+async function getWallet(tokenID) {
+    const apeContract = new ethers.Contract(contractAddress, abi, provider);
+    let winnerAddress = await apeContract.ownerOf(tokenID)
+    return winnerAddress
+}
+
+async function raffle1() {
+    for (let i = 0; i < raffle1Rounds; i++) {
+        //for each rounds (winner) per raffle, we pick a random number between 1 and 1001: the winning tokenID
+    let winner = Math.floor(Math.random() * 1001);
+        //we then get the owner address of the tokenID
+    let wallet = await getWallet(winner)
+        //we verify here that the owner address didn't won today aka the whale security, if so we pick another number
+        if (winners.includes(wallet)) {
+            console.log(`${wallet} already won today`)
+            winner = Math.floor(Math.random() * 1001);
+            wallet = await getWallet(winner)
+            winners.push(winner,wallet)
+        }
+        else {
+        //we push the tokenID and the owner adreess to the raffle winners array    
+    winners.push(winner,wallet) 
+    raffle1Winners.push(winner,wallet) 
+        }
+    }
+    console.log(`Raffle 1 winners - ${raffle1Price}:`, raffle1Winners)
+}
+
+async function raffle2() {
+    for (let i = 0; i < raffle2Rounds; i++) {
+    let winner = Math.floor(Math.random() * 1001);
+    let wallet = await getWallet(winner)
+    if (winners.includes(wallet)) {
+        console.log(`${wallet} already won today`)
+        winner = Math.floor(Math.random() * 1001);
+        wallet = await getWallet(winner)
+        winners.push(winner,wallet)
+    }
+    else {
+    winners.push(winner,wallet)
+    raffle2Winners.push(winner,wallet) 
+    }
+     }     
+    console.log(`Raffle 2 winners - ${raffle2Price}:`, raffle2Winners)
+}
+
+async function raffle3() {
+    let winner = Math.floor(Math.random() * 1001);
+    let wallet = await getWallet(winner)
+    if (winners.includes(wallet)) {
+        console.log(`${wallet} already won today`)
+        winner = Math.floor(Math.random() * 1001);
+        wallet = await getWallet(winner)
+        winners.push(winner,wallet)
+    }
+    else {
+    winners.push(winner,wallet)
+    raffle3Winner.push(winner,wallet) 
+    console.log(`Raffle 3 winner - ${raffle3Price}:`, raffle3Winner)
+    }
+}
+
+//Ask the user for the raffle number to launch.
+async function pickRaffle() {
+console.log('What round is it dear Ape?')
+var prompt = readlineSync.question('Enter: 1/2/3 or 0 to exit');
+if (prompt === '1') {
+    await raffle1()
+    pickRaffle()
+} else if (prompt === '2') {
+    await raffle2()
+    pickRaffle()
+} else if (prompt === '3') {
+   await raffle3()
+    pickRaffle()
+} else {
+    console.log(`%c
+    ██████  ██    ██ ███████     ██████  ██    ██ ███████ 
+    ██   ██  ██  ██  ██          ██   ██  ██  ██  ██      
+    ██████    ████   █████       ██████    ████   █████   
+    ██   ██    ██    ██          ██   ██    ██    ██      
+    ██████     ██    ███████     ██████     ██    ███████                                                                                         
+                                                                                        " 
+`, `font-family: monospace`);
+    process.exit(0)
+}
+}
+console.log(`%c
+██████  ██      ███    ███ ██████       █████  ██████  ███████ ███████ 
+██       ██      ████  ████ ██   ██     ██   ██ ██   ██ ██      ██      
+██   ███ ██      ██ ████ ██ ██████      ███████ ██████  █████   ███████ 
+██    ██ ██      ██  ██  ██ ██   ██     ██   ██ ██      ██           ██ 
+ ██████  ███████ ██      ██ ██   ██     ██   ██ ██      ███████ ███████ 
+                                                                        
+                                                                                        
+ ██     ██ ███████ ███████ ██   ██ ██      ██    ██     ██████   █████  ███████ ███████ ██      ███████ 
+ ██     ██ ██      ██      ██  ██  ██       ██  ██      ██   ██ ██   ██ ██      ██      ██      ██      
+ ██  █  ██ █████   █████   █████   ██        ████       ██████  ███████ █████   █████   ██      █████   
+ ██ ███ ██ ██      ██      ██  ██  ██         ██        ██   ██ ██   ██ ██      ██      ██      ██      
+  ███ ███  ███████ ███████ ██   ██ ███████    ██        ██   ██ ██   ██ ██      ██      ███████ ███████                                                                                         
+                                                                                        " 
+`, `font-family: monospace`);
+
+pickRaffle()
