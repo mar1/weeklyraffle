@@ -14,7 +14,7 @@ If a wallet address won twice during the same session, his address is replaced b
 
  - Create a new directory somewhere on your computer
  - Open a terminal and use the "cd" command to move to that folder
-	 - For instance "cd C:\Users\marin\Documents\glmrapes\"
+	 - For instance "cd C:/Users/marin/Documents/glmrapes/"
  - Clone github repository (you can also download the files and put them here directly)
 	 - In the terminal "git clone https://github.com/mar1/weeklyraffle.git"
  - Enter in this new directory
