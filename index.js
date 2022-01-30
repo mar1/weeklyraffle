@@ -23,6 +23,8 @@ const raffle3Winner = []
 const raffle3Price = '50 GLMR'
 // winners array will register all the winners addresses to verify they didn't win on the current session
 let winners = []
+// rand function to goes from 1 to 1001
+randfunction=(min,max)=>Math.floor(Math.random() * (max - min + 1) + min);
 
 //MAIN
 
@@ -36,17 +38,28 @@ async function getWallet(tokenID) {
 async function raffle1() {
     for (let i = 0; i < raffle1Rounds; i++) {
         //for each rounds (winner) per raffle, we pick a random number between 1 and 1001: the winning tokenID
-    let winner = Math.floor(Math.random() * 1001);
+        let winner = randfunction(1,1001)
         //we then get the owner address of the tokenID
     let wallet = await getWallet(winner)
         //we verify here that the owner address didn't won today aka the whale security, if so we pick another number
         if (winners.includes(wallet)) {
             console.log(`${wallet} already won today`)
-            winner = Math.floor(Math.random() * 1001);
+            winner = randfunction(1,1001)
             wallet = await getWallet(winner)
+            if (winners.includes(wallet)) {
+                console.log(`${wallet} already won today`)
+                winner = randfunction(1,1001)
+            wallet = await getWallet(winner)
+                    if (winners.includes(wallet)) {
+                        console.log(`${wallet} already won today`)
+                    }
+                    else {
+                    winners.push(winner,wallet)
+                    }
+            }
+            else {
             winners.push(winner,wallet)
-            await sleep(3000)
-            console.log(`Raffle 1 winner - ${raffle1Price}:`, raffle1Winners)
+            }
         }
         else {
         //we push the tokenID and the owner adreess to the raffle winners array    
@@ -61,16 +74,30 @@ async function raffle1() {
 
 async function raffle2() {
     for (let i = 0; i < raffle2Rounds; i++) {
-    let winner = Math.floor(Math.random() * 1001);
+        let winner = randfunction(1,1001)
     let wallet = await getWallet(winner)
     if (winners.includes(wallet)) {
         console.log(`${wallet} already won today`)
-        winner = Math.floor(Math.random() * 1001);
+        winner = randfunction(1,1001)
         wallet = await getWallet(winner)
+        if (winners.includes(wallet)) {
+            console.log(`${wallet} already won today`)
+            winner = randfunction(1,1001)
+        wallet = await getWallet(winner)
+                if (winners.includes(wallet)) {
+                    console.log(`${wallet} already won today`)
+                }
+                else {
+                winners.push(winner,wallet)
+                }
+        }
+        else {
         winners.push(winner,wallet)
+        }
     }
     else {
-    winners.push(winner,wallet)
+    //we push the tokenID and the owner adreess to the raffle winners array    
+    winners.push(winner,wallet) 
     await sleep(3000)
     console.log(`Raffle 2 winner - ${raffle2Price}:`, winner, wallet)
     raffle2Winners.push(winner,wallet) 
@@ -80,16 +107,30 @@ async function raffle2() {
 }
 
 async function raffle3() {
-    let winner = Math.floor(Math.random() * 1001);
+    let winner = randfunction(1,1001)
     let wallet = await getWallet(winner)
     if (winners.includes(wallet)) {
         console.log(`${wallet} already won today`)
-        winner = Math.floor(Math.random() * 1001);
+        winner = randfunction(1,1001)
         wallet = await getWallet(winner)
+        if (winners.includes(wallet)) {
+            console.log(`${wallet} already won today`)
+            winner = randfunction(1,1001)
+        wallet = await getWallet(winner)
+                if (winners.includes(wallet)) {
+                    console.log(`${wallet} already won today`)
+                }
+                else {
+                winners.push(winner,wallet)
+                }
+        }
+        else {
         winners.push(winner,wallet)
+        }
     }
     else {
-    winners.push(winner,wallet)
+    //we push the tokenID and the owner adreess to the raffle winners array    
+    winners.push(winner,wallet) 
     raffle3Winner.push(winner,wallet) 
     }
     await sleep(3000)
