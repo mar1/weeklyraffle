@@ -15,10 +15,10 @@ const provider = new ethers.providers.StaticJsonRpcProvider(providerURL, {
 //We declare an array for the future winners per round, a number of winners (for raffle 1 and 2) and the prizes for the lottery
 const raffle1Winners = []
 const raffle1Rounds = 5
-const raffle1Price = '5 GLMR'
+const raffle1Price = '8 GLMR'
 const raffle2Winners = []
 const raffle2Rounds = 3
-const raffle2Price = '15 GLMR'
+const raffle2Price = '20 GLMR'
 const raffle3Winner = []
 const raffle3Price = '50 GLMR'
 // winners array will register all the winners addresses to verify they didn't win on the current session
@@ -45,14 +45,18 @@ async function raffle1() {
             winner = Math.floor(Math.random() * 1001);
             wallet = await getWallet(winner)
             winners.push(winner,wallet)
+            await sleep(3000)
+            console.log(`Raffle 1 winner - ${raffle1Price}:`, raffle1Winners)
         }
         else {
         //we push the tokenID and the owner adreess to the raffle winners array    
     winners.push(winner,wallet) 
+    await sleep(3000)
+    console.log(`Raffle 1 winner - ${raffle1Price}:`, winner, wallet)
     raffle1Winners.push(winner,wallet) 
         }
     }
-    console.log(`Raffle 1 winners - ${raffle1Price}:`, raffle1Winners)
+    console.log(`Raffle 1 winners - ${raffle1Price}:`, raffle1Winners) 
 }
 
 async function raffle2() {
@@ -67,10 +71,12 @@ async function raffle2() {
     }
     else {
     winners.push(winner,wallet)
+    await sleep(3000)
+    console.log(`Raffle 2 winner - ${raffle2Price}:`, winner, wallet)
     raffle2Winners.push(winner,wallet) 
     }
      }     
-    console.log(`Raffle 2 winners - ${raffle2Price}:`, raffle2Winners)
+    console.log(`Raffle 2 winner - ${raffle2Price}:`, raffle2Winners)
 }
 
 async function raffle3() {
@@ -85,13 +91,25 @@ async function raffle3() {
     else {
     winners.push(winner,wallet)
     raffle3Winner.push(winner,wallet) 
-    console.log(`Raffle 3 winner - ${raffle3Price}:`, raffle3Winner)
     }
+    await sleep(3000)
+    console.log(`Raffle 3 winner - ${raffle3Price}:`, raffle3Winner)
 }
+
+//Create some suspense while revealing the winners
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
 
 //Ask the user for the raffle number to launch.
 async function pickRaffle() {
 console.log('What round is it dear Ape?')
+console.log('1 - 5 prizes of 8 GLMR')
+console.log('2 - 3 prizes of 20 GLMR')
+console.log('3 - 1 prize of 50 GLMR')
+
 var prompt = readlineSync.question('Enter: 1/2/3 or 0 to exit');
 if (prompt === '1') {
     await raffle1()
