@@ -15,12 +15,12 @@ const provider = new ethers.providers.StaticJsonRpcProvider(providerURL, {
 //We declare an array for the future winners per round, a number of winners (for raffle 1 and 2) and the prizes for the lottery
 const raffle1Winners = []
 const raffle1Rounds = 5
-const raffle1Price = '8 GLMR'
+const raffle1Price = '1.88 GLMR'
 const raffle2Winners = []
 const raffle2Rounds = 3
-const raffle2Price = '20 GLMR'
+const raffle2Price = '4.70 GLMR'
 const raffle3Winner = []
-const raffle3Price = '50 GLMR'
+const raffle3Price = '11.75 GLMR'
 // winners array will register all the winners addresses to verify they didn't win on the current session
 let winners = []
 // rand function to goes from 1 to 1001
@@ -147,9 +147,9 @@ function sleep(ms) {
 //Ask the user for the raffle number to launch.
 async function pickRaffle() {
 console.log('What round is it dear Ape?')
-console.log('1 - 5 prizes of 8 GLMR')
-console.log('2 - 3 prizes of 20 GLMR')
-console.log('3 - 1 prize of 50 GLMR')
+console.log(`1 - ${raffle1Rounds} prizes of ${raffle1Price}`)
+console.log(`2 - ${raffle2Rounds} prizes of ${raffle2Price}`)
+console.log(`3 - 1 prize of ${raffle3Price}`)
 
 var prompt = readlineSync.question('Enter: 1/2/3 or 0 to exit');
 if (prompt === '1') {
