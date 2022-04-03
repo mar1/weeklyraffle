@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "ethers": "^5.5.3",
+    "node-fetch": "^2.6.7",
     "prompt-sync": "^4.2.0",
     "readline-sync": "^1.4.10"
   }

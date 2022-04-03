@@ -17,12 +17,12 @@ const provider = new ethers.providers.StaticJsonRpcProvider(providerURL, {
 //We declare an array for the future winners per round, a number of winners (for raffle 1 and 2) and the prizes for the lottery
 const raffle1Winners = []
 const raffle1Rounds = 5
-const raffle1Price = '6.18 GLMR'
+const raffle1Price = '14.55 GLMR'
 const raffle2Winners = []
 const raffle2Rounds = 3
-const raffle2Price = '15.46 GLMR'
+const raffle2Price = '36.4 GLMR'
 const raffle3Winner = []
-const raffle3Price = '38.66 GLMR'
+const raffle3Price = '91 GLMR'
 // winners array will register all the winners addresses to verify they didn't win on the current session
 let winners = []
 // rand function to goes from 1 to 1001
