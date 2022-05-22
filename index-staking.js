@@ -20,12 +20,12 @@ const crypto = require('crypto').webcrypto;
 //We declare an array for the future winners per round, a number of winners (for raffle 1 and 2) and the prizes for the lottery
 const raffle1Winners = []
 const raffle1Rounds = 5
-const raffle1Price = '8.4 GLMR'
+const raffle1Price = '9.85 GLMR'
 const raffle2Winners = []
 const raffle2Rounds = 3
-const raffle2Price = '25 GLMR'
+const raffle2Price = '24.62 GLMR'
 const raffle3Winner = []
-const raffle3Price = '62.52 GLMR'
+const raffle3Price = '61.56 GLMR'
 const raffle4Winner = []
 const raffle4Price = '3 GLMR'
 // winners array will register all the winners addresses to verify they didn't win on the current session
@@ -235,8 +235,9 @@ await fetchStaked()
 .then(staked => {
   let percent = (staked*100/1001)
   let participants = 1001 - staked
+  let percent2 = (participants*100/1001)
  console.log(`Currently ${staked}/1001 staked Apes (${percent.toFixed(2)} %) `)
- console.log(`${participants} Apes participating to the lottery`)
+ console.log(`${participants} Apes participating to the lottery (${percent2.toFixed(2)} %)`)
 })
 .catch(error => {
   console.log(error)
