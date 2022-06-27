@@ -20,18 +20,25 @@ const crypto = require('crypto').webcrypto;
 //We declare an array for the future winners per round, a number of winners (for raffle 1 and 2) and the prizes for the lottery
 const raffle1Winners = []
 const raffle1Rounds = 5
-const raffle1Price = '9.85 GLMR'
+const raffle1Price = '7 GLMR'
 const raffle2Winners = []
 const raffle2Rounds = 3
-const raffle2Price = '24.62 GLMR'
+const raffle2Price = '17.52 GLMR'
 const raffle3Winner = []
-const raffle3Price = '61.56 GLMR'
+const raffle3Price = '43.79 GLMR'
 const raffle4Winner = []
 const raffle4Price = '3 GLMR'
 // winners array will register all the winners addresses to verify they didn't win on the current session
 let winners = []
-// rand function to goes from 1 to 1001
-randfunction=(min,max)=>Math.floor(Math.random() * (max - min + 1) + min);
+//NEW CRYPTOGRAPHIC RANDOM METHOD. 
+const randomFloat = function () {
+    const int = crypto.getRandomValues(new Uint32Array(1))[0]
+    return int / 2**32
+  }
+const randomInt = function (min, max) {
+    const range = max - min
+    return Math.floor(randomFloat() * range + min)
+  }
 
 
 //MAIN
@@ -62,24 +69,24 @@ async function fetchStaked() {
 async function raffle1() {
     for (let i = 0; raffle1Winners.length < raffle1Rounds * 2; i++) {
         //for each rounds (winner) per raffle, we pick a random number between 1 and 1001: the winning tokenID
-        let winner = randfunction(1,1001)
+        let winner = randomInt(1,1001) 
         //we then get the owner address of the tokenID
     let wallet = await getWallet(winner)
         //we verify here that the owner address didn't won today aka the whale security, if so we pick another number
         if (winners.includes(wallet) || wallet == stakingContractAddress) {
             console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
             console.log(`Let's find another Ape`)
-            winner = randfunction(1,1001)
+            winner = randomInt(1,1001)
             wallet = await getWallet(winner)
             if (winners.includes(wallet) || wallet == stakingContractAddress) {
                 console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
                 console.log(`Let's find another Ape`)
-                winner = randfunction(1,1001)
+                winner = randomInt(1,1001)
             wallet = await getWallet(winner)
             if (winners.includes(wallet) || wallet == stakingContractAddress) {
                 console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
                 console.log(`Let's find another Ape`)
-                winner = randfunction(1,1001)
+                winner = randomInt(1,1001)
                 wallet = await getWallet(winner)
                     }
                     else {
@@ -103,17 +110,17 @@ async function raffle1() {
 
 async function raffle2() {
     for (let i = 0; raffle2Winners.length < raffle2Rounds * 2; i++) {
-        let winner = randfunction(1,1001)
+        let winner = randomInt(1,1001)
     let wallet = await getWallet(winner)
     if (winners.includes(wallet) || wallet == stakingContractAddress) {
         console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
         console.log(`Let's find another Ape`)
-        winner = randfunction(1,1001)
+        winner = randomInt(1,1001)
         wallet = await getWallet(winner)
         if (winners.includes(wallet) || wallet == stakingContractAddress) {
             console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
             console.log(`Let's find another Ape`)
-            winner = randfunction(1,1001)
+            winner = randomInt(1,1001)
         wallet = await getWallet(winner)
         if (winners.includes(wallet) || wallet == stakingContractAddress) {
             console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
@@ -139,27 +146,27 @@ async function raffle2() {
 
 async function raffle3() {
     for (let i = 0; raffle3Winner.length < 1; i++) {
-    let winner = randfunction(1,1001)
+    let winner = randomInt(1,1001)
     let wallet = await getWallet(winner)
     if (winners.includes(wallet) || wallet == stakingContractAddress) {
         console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
         console.log(`Let's find another Ape`)
-        winner = randfunction(1,1001)
+        winner = randomInt(1,1001)
         wallet = await getWallet(winner)
         if (winners.includes(wallet) || wallet == stakingContractAddress) {
             console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
             console.log(`Let's find another Ape`)
-            winner = randfunction(1,1001)
+            winner = randomInt(1,1001)
             wallet = await getWallet(winner)
         if (winners.includes(wallet) || wallet == stakingContractAddress) {
             console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
             console.log(`Let's find another Ape`)
-            winner = randfunction(1,1001)
+            winner = randomInt(1,1001)
             wallet = await getWallet(winner)
             if (winners.includes(wallet) || wallet == stakingContractAddress) {
                 console.log(`Ape ${winner} (${wallet}) already won today or is currently staked.`)
                 console.log(`Let's find another Ape`)
-                winner = randfunction(1,1001)
+                winner = randomInt(1,1001)
                 wallet = await getWallet(winner)
                     }
                     else {
@@ -185,11 +192,7 @@ async function raffle3() {
 }
 
 
-//NEW CRYPTOGRAPHIC RANDOM METHOD. Need to implement next week for GLMA
-const randomFloat = function () {
-    const int = crypto.getRandomValues(new Uint32Array(1))[0]
-    return int / 2**32
-  }
+
 
 
 //GLMJ RAFFLE
