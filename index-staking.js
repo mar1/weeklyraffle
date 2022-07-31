@@ -20,14 +20,14 @@ const crypto = require('crypto').webcrypto;
 //We declare an array for the future winners per round, a number of winners (for raffle 1 and 2) and the prizes for the lottery
 const raffle1Winners = []
 const raffle1Rounds = 5
-const raffle1Price = '26.52 GLMR'
+const raffle1Price = '9.41 GLMR'
 const raffle2Winners = []
 const raffle2Rounds = 3
-const raffle2Price = '66.29 GLMR'
+const raffle2Price = '23.51 GLMR'
 const raffle3Winner = []
-const raffle3Price = '165.73 GLMR'
+const raffle3Price = '58.77 GLMR'
 const raffle4Winner = []
-const raffle4Price = '3 GLMR'
+const raffle4Price = '20 JPTS'
 // winners array will register all the winners addresses to verify they didn't win on the current session
 let winners = []
 //NEW CRYPTOGRAPHIC RANDOM METHOD. 
